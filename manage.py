@@ -4,7 +4,6 @@ from flask_script import Server,Manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from app import app, db
-from masterData import createMasterData
 
 # Enable flask-migrate
 migrate = Migrate(app, db)
@@ -12,10 +11,6 @@ migrate = Migrate(app, db)
 # Enable flask-manager
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
-
-@manager.command
-def masterData():
-    createMasterData()
 
 if __name__ == '__main__':
     manager.run()

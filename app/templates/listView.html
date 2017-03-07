@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block title %}{{title|safe}}{% endblock %}
+{% block content %}
+<div style="width:{{width|safe}}px">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>{{contentTitle|safe}}</h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            {% for c in tableColumns %}<th>{{ c|safe }}</th>{% endfor %}
+            {% if targetButtons %}
+            <th class="tableButtons"></th>
+            {% endif %}
+            {% if chartButtons %}
+            <th class="tableButtons"></th>
+            {% endif %}
+            {% if not withoutDeleteEntry %}
+            <th class="tableButtons"></th>
+            {% endif %}
+            {% if not withoutNewEntry %}
+            <th class="tableButtons">
+                <a href="{{ request.path }}/new">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </th>
+            {% endif %}
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in tableData %}
+        <tr>
+            {% for i in row[1:] %}
+                <td>{{ i|safe }}</td>
+            {% endfor %}
+            <td class="tableButtons">
+                {% if not detailsButton %}
+                <form name="editForm{{row[0]}}" action="{{ request.path }}/update/{{row[0]}}" class="updateForm" method="get">
+                    <input type='hidden' class="updateButton" type="submit" value="Edit">
+                </form>
+                <a href="#" onclick="document.forms['editForm{{row[0]}}'].submit(); return false;"><i class="fa fa-edit"></i></a>
+                {% else %}
+                <form name="editForm{{row[0]}}" action="{{ request.path }}/details/{{row[0]}}" class="updateForm" method="get">
+                    <input type='hidden' class="detailsButton" type="submit" value="Details">
+                </form>
+                <a href="#" onclick="document.forms['editForm{{row[0]}}'].submit(); return false;"><i class="fa fa-search"></i></a>
+                {% endif %}
+            </td>
+            {% if targetButtons %}
+            <td class="tableButtons">
+                <a href="{{url_for('perfBP.indicatorTargetView', uuid=row[0])}}"><i class="fa fa-bullseye"></i></a>
+            </td>
+            {% endif %}
+            {% if chartButtons %}
+            <td class="tableButtons">
+                <a href="{{url_for('perfBP.indicatorChartView', uuid=row[0])}}"><i class="fa fa-line-chart"></i></a>
+            </td>
+            {% endif %}
+            {% if not withoutDeleteEntry %}
+            <td class="tableButtons">
+                <form name="deleteForm{{row[0]}}" action="{{ request.path }}/delete/{{row[0]}}" class="deleteForm" method="post">
+                <input type='hidden' name='uuid' value='{{row[0]}}'>
+                </form>
+                <a href="#" data-toggle="modal" data-target=".deleteModal{{row[0]}}"><i class="fa fa-close"></i></a>
+            </td>
+            {% endif %}
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+        </div>
+    </div>
+</div>
+
+{% include 'modal/deleteModal.html' %}
+<script type="text/javascript">
+    function confirm_click(){
+        return confirm("Are you sure ?");
+    }
+</script>
+
+{% endblock %}
+{% block foot %}
+{{ super() }}
+{% endblock %}

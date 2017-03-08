@@ -1,8 +1,11 @@
 {% extends "base.html" %}
+
 {% block head %}
 {{ super() }}
 {% endblock %}
+
 {% block title %}{{title|safe}}{% endblock %}
+
 {% block content %}
 <div style="width:{{formWidth|safe}}px;">
 <div class="x_panel">
@@ -39,6 +42,7 @@
 </div>
 
 {% endblock %}
+
 {% block foot %}
 {{ super() }}
 {% endblock %}

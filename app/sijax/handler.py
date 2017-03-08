@@ -29,9 +29,7 @@ class SijaxHandler(object):
         groupName = values['groupName']
         groupDesc = values['groupDesc']
 
-        dataDict = {'name':groupName,
-                    'desc':groupDesc,
-                    'users':[]}
+        dataDict = {'name':groupName, 'desc':groupDesc, 'users':[]}
 
         validations = []
         grpExists = checkGroup(groupName)

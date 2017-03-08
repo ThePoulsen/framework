@@ -1,8 +1,11 @@
 {% extends "base.html" %}
+
 {% block head %}
 {{ super() }}
 {% endblock %}
+
 {% block title %}{{title|safe}}{% endblock %}
+
 {% block content %}
 <div class="col" style="max-width:750px;">
     <div class="x_panel">
@@ -74,17 +77,14 @@
         </div>
     </div>
 </div>
-<p id="demo"></p>
 <script>
 function myFunction() {
     var x = document.getElementById("contactName").value;
     Sijax.request('getContactDetails', [x]);
 }
 </script>
-
 {% endblock %}
+
 {% block foot %}
 {{ super() }}
-<script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
-<script type="text/javascript">{{ g.sijax.get_js()|safe }}</script>
 {% endblock %}

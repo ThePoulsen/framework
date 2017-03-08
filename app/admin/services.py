@@ -10,10 +10,10 @@ from functools import wraps
 from authAPI import authAPI
 
 def errorMessage(msg):
-    return flash(str(msg), ('error','error'))
+    return flash(str(msg), ('error','Error'))
 
 def successMessage(msg):
-    return flash(str(msg), ('success','success'))
+    return flash(str(msg), ('success','Success'))
 
 def apiMessage(msg):
     if 'error' in msg:
@@ -49,12 +49,12 @@ class select2MultipleWidget(widgets.Select):
 
         return super(select2MultipleWidget, self).__call__(field, multiple = True, **kwargs)
 
-def getRoles():
-    req = authAPI(endpoint='getRoles', method='post', token=session['token'])
-    if 'error' in req:
-        return False
-    else:
-        return req['roles']
+#def getRoles():
+#    req = authAPI(endpoint='getRoles', method='post', token=session['token'])
+#    if 'error' in req:
+#        return False
+#    else:
+#        return req['roles']
 
 # flask view decorators
 def requiredRole(*roleList):
@@ -62,6 +62,7 @@ def requiredRole(*roleList):
         @wraps(f)
         def wrapped(*args, **kwargs):
             if not 'token' in session:
+                errorMessage('Please log in to view content')
                 return redirect(url_for('authBP.loginView'))
             roles = session['roles']
             if roles:
@@ -76,44 +77,14 @@ def loginRequired(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not 'token' in session:
+            errorMessage('Please log in to view content')
             return redirect(url_for('authBP.loginView'))
         req = authAPI(endpoint='checkPassword', method='post', token=session['token'])
         if 'error' in req:
+            errorMessage('Please log in to view content')
             return redirect(url_for('authBP.loginView'))
         return f(*args, **kwargs)
     return decorated_function
-
-#Error handlers
-@app.errorhandler(403)
-def forbidden(e):
-    pass
-
-@app.errorhandler(404)
-def notFound(e):
-    pass
-
-# SQL alchemy xml data type
-class XMLType(sqlalchemy.types.UserDefinedType):
-    def get_col_spec(self):
-        return 'XML'
-
-    def bind_processor(self, dialect):
-        def process(value):
-            if value is not None:
-                if isinstance(value, str):
-                    return value
-                else:
-                    return etree.tostring(value)
-            else:
-                return None
-        return process
-
-    def result_processor(self, dialect, coltype):
-        def process(value):
-            if value is not None:
-                value = etree.fromstring(value)
-            return value
-        return process
 
 class FlexibleDecimalField(DecimalField):
     def process_formdata(self, valuelist):

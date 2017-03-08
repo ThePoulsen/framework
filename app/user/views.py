@@ -81,8 +81,8 @@ def userView(uuid=None, function=None):
     elif function == 'delete':
         delUsr = deleteUser(uuid)
         apiMessage(delUsr)
-
         return redirect(url_for('userBP.userView'))
+
     else:
         if function == 'update':
             usr = getUser(uuid=uuid, includes=['includeRoles', 'includeGroups'])['user']
@@ -119,8 +119,8 @@ def userView(uuid=None, function=None):
                     return redirect(url_for('userBP.userView'))
                 else:
                     apiMessage(updateUser)
-
             return render_template('user/userForm.html', usrForm=usrForm, grpForm=grpForm, **kwargs)
+
         elif function == 'new':
             usrForm = userForm(userRole='User')
             grpForm = groupForm()
@@ -166,8 +166,6 @@ def userView(uuid=None, function=None):
                     apiMessage(newUser)
             return render_template('user/userForm.html', usrForm=usrForm, grpForm=grpForm, **kwargs)
 
-    return render_template('listView.html', **kwargs)
-
 # Group View
 @userBP.route('/group', methods=['GET'])
 @userBP.route('/group/<string:function>', methods=['GET', 'POST'])
@@ -183,23 +181,17 @@ def groupView(function=None, uuid=None):
               'tableColumns':['User group','Description' ,'Users assigned to group']}
 
     if function == None:
-        # perform API request
         req = getGroups(includes=['includeUsers'])['groups']
-
-        # set data for listView
         kwargs['tableData'] = [[r['uuid'],r['name'], r['desc'],len(r['users'])] for r in req]
-
-        # return view
         return render_template('listView.html', **kwargs)
+
     elif function == 'delete':
         delGroup = deleteGroup(uuid)
         apiMessage(delGroup)
-
         return redirect(url_for('userBP.groupView'))
 
     else:
         if function == 'update':
-            # Get single group
             grp = getGroup(uuid, includes=['includeUsers'])['group']
             form = groupForm(groupName=grp['name'],
                              groupDesc=grp['desc'],
@@ -219,7 +211,6 @@ def groupView(function=None, uuid=None):
         elif function == 'new':
             form = groupForm()
             form.groupUsers.choices = [(unicode(r['uuid']),r['email']) for r in getUsers()['users']]
-
             if form.validate_on_submit():
                 dataDict = {'name':form.groupName.data,
                             'desc':form.groupDesc.data,

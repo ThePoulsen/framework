@@ -32,7 +32,6 @@ flask_sijax.Sijax(app)
 
 ## Import models
 
-
 ## import blueprints
 from app.auth.views import authBP
 from app.settings.views import settingsBP

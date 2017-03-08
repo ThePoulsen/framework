@@ -1,8 +1,11 @@
 {% extends "base.html" %}
+
 {% block head %}
 {{ super() }}
 {% endblock %}
+
 {% block title %}{{title|safe}}{% endblock %}
+
 {% block content %}
 <div style="width:{{formWidth|safe}}px;">
 <div class="x_panel">
@@ -11,7 +14,6 @@
 <div class="clearfix"></div>
 </div>
 <div class="x_content">
-
 
 <form method="post" name="userForm" id="userForm">
     {{ usrForm.userName.label }}
@@ -95,10 +97,9 @@
 </div>
 </div>
 {% endblock %}
+
 {% block foot %}
 {{ super() }}
-<script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
-<script type="text/javascript">{{ g.sijax.get_js()|safe }}</script>
 
 <!--Form error handler-->
 <script type="text/javascript">
@@ -123,5 +124,4 @@ $(function() {
     });
 });
 </script>
-
 {% endblock %}

@@ -58,7 +58,6 @@ def companyView():
                        'postcode':form.postcode.data,
                        'city': form.city.data}
 
-
         if not contact['uuid'] == '':
             remCont = removeContactPerson(contact['uuid'])
         addCont = addContactPerson(form.contactName.data)
@@ -70,9 +69,6 @@ def companyView():
                 errorMessage(putCont['error'])
         else:
             errorMessage(addCont['error'])
-
-
-
     return render_template('settings/companyView.html', form=form, **kwargs)
 
 

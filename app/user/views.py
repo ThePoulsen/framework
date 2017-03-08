@@ -17,9 +17,12 @@ userBP = Blueprint('userBP', __name__, template_folder='templates')
 @requiredRole([u'User', u'Superuser', u'Administrator'])
 @loginRequired
 def userProfileView():
-#    kwargs = {'title':'User profile'}
+    kwargs = {'title':'User profile'}
+    user = getUser(uuid=session['user_uuid'])
+    kwargs['user'] = user
+    form = changePasswordForm()
 
-    return render_template('user/userProfileView.html')
+    return render_template('user/userProfileView.html', form=form, **kwargs)
 
 @userBP.route('/changePassword', methods=['GET','POST'])
 @requiredRole([u'User', u'Superuser', u'Administrator'])
@@ -111,7 +114,7 @@ def userView(uuid=None, function=None):
                             'email': usrForm.userEmail.data,
                             'phone': usrForm.userPhone.data,
                             'roles': [usrForm.userRole.data],
-                            'groups': usrForm.userGroups.data}
+                            'groups': [usrForm.userGroups.data]}
 
                 updateUser = putUser(dataDict=dataDict, uuid=uuid)
                 if not 'error' in updateUser:

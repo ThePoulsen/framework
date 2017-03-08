@@ -1,8 +1,11 @@
 ## -*- coding: utf-8 -*-
 import json
+from flask import url_for
 from services import sijaxSuccess
 from app.crud.groupCRUD import postGroup, checkGroup
 from app.crud.userCRUD import getUser
+from app.crud.tenantCRUD import getCurrentTenant, putTenant
+from app.admin.services import successMessage
 
 class SijaxHandler(object):
     """A container class for all Sijax handlers.
@@ -15,6 +18,28 @@ class SijaxHandler(object):
     def cancelModal(obj_response, form, modal):
         obj_response.script("$('#{}')[0].reset();".format(form))
         obj_response.script("$('#{}').modal('hide')".format(modal))
+
+    @staticmethod
+    def companyFormModal(obj_response, values):
+        tenant = getCurrentTenant()
+
+        dataDict = {'regNo' : values['regNo'],
+                    'name' : values['companyName'],
+                    'addr' : values['addr'],
+                    'addr2' : values['addr2'],
+                    'postcode' : values['postcode'],
+                    'city' : values['city']}
+
+        updateTenant = putTenant(uuid=tenant['uuid'], dataDict=dataDict)
+        if 'success' in updateTenant:
+
+            obj_response.script("location.reload();")
+            successMessage('Company Details have been updated')
+
+    @staticmethod
+    def changeContactModal(obj_response, values):
+        obj_response.script("location.reload();")
+        successMessage('Company Contact have been updated')
 
     @staticmethod
     def getContactDetails(obj_response, uuid):

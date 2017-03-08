@@ -10,7 +10,7 @@ def getCurrentTenant():
         tenant_uuid = tenant['success']
         return authAPI(endpoint='tenant/'+unicode(tenant_uuid), method='get', token=session['token'])['tenant']
     else:
-        return False
+        return tenant
 
 def putTenant(uuid, dataDict):
     return authAPI(endpoint='tenant/'+unicode(uuid), method='put', token=session['token'], dataDict=dataDict)

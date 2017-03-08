@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
+
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Company Details</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" data-toggle="modal" data-target="#changeCompanyInformationModal">Edit Company Details</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <p><b>regNo:</b>&nbsp;    {{tenant['regNo']|safe}}</p>
+                <p><b>companyName:</b>&nbsp;    {{tenant['name']|safe}}</p>
+                <p><b>addr:</b>&nbsp;    {{tenant['addr']|safe}}</p>
+                <p><b>addr2:</b>&nbsp;    {{tenant['addr2']|safe}}</p>
+                <p><b>postcode:</b>&nbsp;    {{tenant['postcode']|safe}}</p>
+                <p><b>city:</b>&nbsp;    {{tenant['city']|safe}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Contact Person</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" data-toggle="modal" data-target="#changeContactModal">Edit Contact Person</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <p><b>Contact Name:</b>&nbsp;    {{contact['name']|safe}}</p>
+                <p><b>Email:</b>&nbsp;    {{contact['email']|safe}}</p>
+                <p><b>Phone:</b>&nbsp;    {{contact['phone']|safe}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Company Modal -->
+<div class="modal" id="changeCompanyInformationModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog"  style="width:350px;">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Edit Company Details
+                </h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form method="post" name="companyForm" id="companyForm">
+                    {{ companyForm.regNo.label }}
+                    {{ companyForm.regNo(readonly = true, class_='form-control')}}<br>
+                    {{ companyForm.companyName.label }}
+                    {{ companyForm.companyName(class_='form-control ')}}<br>
+                    {{ companyForm.addr.label }}
+                    {{ companyForm.addr(class_='form-control ')}}<br>
+                    {{ companyForm.addr2.label }}
+                    {{ companyForm.addr2(autocomplete="false", class_='form-control ')}}<br>
+                    {{ companyForm.postcode.label }}
+                    {{ companyForm.postcode(class_='form-control ')}}<br>
+                    {{ companyForm.city.label }}
+                    {{ companyForm.city(class_='form-control ')}}<br>
+                    <input style="float:right;" type="submit" class="btn btn-primary" value="Save changes">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Password Modal -->
+<div class="modal" id="changeContactModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog"  style="width:400px;">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Edit Contact Person
+                </h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form method="post" name="contactForm" id="contactForm">
+                    {{ contactForm.contactName.label }}
+                    {{ contactForm.contactName(class_='form-control')}}<br><br>
+                    {{ contactForm.email.label }}
+                    {{ contactForm.email(readonly = true, class_='form-control ')}}<br>
+                    {{ contactForm.phone.label }}
+                    {{ contactForm.phone(readonly = true, class_='form-control ')}}<br>
+
+                    <input style="float:right;" type="submit" class="btn btn-primary" value="Save changes">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block foot %}
+{{ super() }}
+
+<!--Form sijax submission-->
+<script type="text/javascript">
+    $(function() {
+        $('#companyForm').bind('submit', function() {
+            //Get form values
+            var values = Sijax.getFormValues('#companyForm');
+            //Send form values to sijax handler
+            Sijax.request('companyFormModal', [values]);
+            //Prevent the form from being submitted
+            return false;
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        $('#contactForm').bind('submit', function() {
+            //Get form values
+            var values = Sijax.getFormValues('#contactForm');
+            //Send form values to sijax handler
+            Sijax.request('changeContactModal', [values]);
+            //Prevent the form from being submitted
+            return false;
+        });
+    });
+</script>
+{% endblock %}

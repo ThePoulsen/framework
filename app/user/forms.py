@@ -6,7 +6,7 @@ from wtforms.validators import InputRequired, Email
 from app.admin.services import  select2MultipleWidget
 
 class changePasswordForm(FlaskForm):
-    password = PasswordField('New password', [InputRequired('Please enter a password')])
+    password = PasswordField('Password', [InputRequired('Please enter a password')])
 
 class userForm(FlaskForm):
     userName = StringField('Name', validators=[InputRequired('Please enter a user name')])

@@ -4,9 +4,56 @@
 {{ super() }}
 {% endblock %}
 
-{% block title %}{{title|safe}}{% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
+
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>User information</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content" style="height:130px;">
+                <p><b>Name:</b>&nbsp;    {{user['user']['name']|safe}}</p>
+                <p><b>Email Address:</b>&nbsp;    {{user['user']['email']|safe}}</p>
+                <p><b>Phone number:</b>&nbsp;    {{user['user']['phone']|safe}}</p>
+                <p><b>Member since:</b>&nbsp;    {{user['user']['conf_at']|safe}}</p>
+            </div>
+        </div>
+    </div>
+
+    {% if not user['user']['name']|safe == 'Test User' %}
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Change password</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content" style="height:130px;">
+                <form action="{{url_for('userBP.changePasswordView')}}" method="post" >
+                    {{ form.password.label }}
+                    {{ form.password(autocomplete="new-password", class_='form-control ')}}<br>
+                    {% for error in form.password.errors %}
+                        <p>{{error}}</p>
+                    {% endfor %}
+
+                    <div class="input-group" style="float:right;">
+                        {{ form.csrf_token }}
+                        <a href="#" onclick="window.history.back();">Cancel</a> &nbsp
+                        <input type="submit" class="btn btn-primary" tabindex="1" value="OK">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+
+{% endblock %}
 
 {% block foot %}
 {{ super() }}

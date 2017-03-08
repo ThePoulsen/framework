@@ -4,8 +4,6 @@
 {{ super() }}
 {% endblock %}
 
-{% block title %}{{title|safe}}{% endblock %}
-
 {% block content %}
 <div class="col" style="max-width:750px;">
     <div class="x_panel">
@@ -55,7 +53,7 @@
                         {% endfor %}
                         <br>
                         {{ form.phone.label }}
-                        {{ form.phone(readonly=True, class_='form-control')}}<br>
+                        {{ form.phone(class_='form-control')}}<br>
                         {% for error in form.phone.errors %}
                             <p>{{error}}</p>
                         {% endfor %}

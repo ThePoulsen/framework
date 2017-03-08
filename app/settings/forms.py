@@ -3,7 +3,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, TextAreaField, SelectMultipleField, BooleanField, IntegerField
 from app.admin.services import select2Widget, select2MultipleWidget
-from wtforms.validators import InputRequired, Email
+from wtforms.validators import InputRequired, Email, Optional
 
 class companyForm(FlaskForm):
     regNo = StringField('Registration ID',  [InputRequired('Please enter a Registration ID')])
@@ -12,6 +12,8 @@ class companyForm(FlaskForm):
     addr2 = StringField('Address 2')
     postcode = StringField('Postal code')
     city = StringField('City')
+
+class contactForm(FlaskForm):
     contactName = SelectField('Contact name', choices=[])
-    email = StringField('Email', [InputRequired("Please enter your email address."), Email("This field requires a valid email address")])
-    phone = IntegerField('Phone number')
+    email = StringField('Email')
+    phone = IntegerField('Phone number', validators=[Optional()])

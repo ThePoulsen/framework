@@ -17,9 +17,9 @@ def successMessage(msg):
 
 def apiMessage(msg):
     if 'error' in msg:
-        return flash(str(msg['error']), ('error','error'))
-    if 'success' in msg:
-        return flash(str(msg['success']), ('success','success'))
+        return flash(str(msg['error']), ('error','Error'))
+    elif 'success' in msg:
+        return flash(str(msg['success']), ('success','Success'))
 
 # SendMail
 def sendMail(subject, sender, recipients, text_body, html_body):
@@ -48,13 +48,6 @@ class select2MultipleWidget(widgets.Select):
             kwargs['data-allow-blank'] = u'1'
 
         return super(select2MultipleWidget, self).__call__(field, multiple = True, **kwargs)
-
-#def getRoles():
-#    req = authAPI(endpoint='getRoles', method='post', token=session['token'])
-#    if 'error' in req:
-#        return False
-#    else:
-#        return req['roles']
 
 # flask view decorators
 def requiredRole(*roleList):

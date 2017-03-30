@@ -14,7 +14,7 @@ userBP = Blueprint('userBP', __name__, template_folder='templates')
 
 # User profile
 @userBP.route('/profile', methods=['GET'])
-@requiredRole([u'User', u'Superuser', u'Administrator'])
+#@requiredRole([u'User', u'Superuser', u'Administrator'])
 @loginRequired
 def userProfileView():
     kwargs = {'title':'User profile'}
@@ -71,7 +71,7 @@ def changePasswordView():
 def userView(uuid=None, function=None):
     # universal variables
     form = userForm()
-    kwargs = {'title':'Users',
+    kwargs = {'contentTitle':'Users',
               'width':'',
               'formWidth':'400'}
 
@@ -83,7 +83,9 @@ def userView(uuid=None, function=None):
 
     elif function == 'delete':
         delUsr = deleteUser(uuid)
-        apiMessage(delUsr)
+        if 'error' in delUsr:
+            errorMessage(delUsr['error'])
+        print delUsr
         return redirect(url_for('userBP.userView'))
 
     else:
@@ -121,7 +123,7 @@ def userView(uuid=None, function=None):
                     apiMessage(updateUser)
                     return redirect(url_for('userBP.userView'))
                 else:
-                    apiMessage(updateUser)
+                    return unicode(updateUser)
             return render_template('user/userForm.html', usrForm=usrForm, grpForm=grpForm, **kwargs)
 
         elif function == 'new':
@@ -177,10 +179,9 @@ def userView(uuid=None, function=None):
 @requiredRole([u'Administrator', u'Superuser'])
 def groupView(function=None, uuid=None):
     # global variables
-    kwargs = {'title':'User groups',
-              'width':'600',
+    kwargs = {'contentTitle':'User groups',
+              'width':'800',
               'formWidth':'350',
-              'contentTitle':'Add new user Group',
               'tableColumns':['User group','Description' ,'Users assigned to group']}
 
     if function == None:
@@ -195,6 +196,7 @@ def groupView(function=None, uuid=None):
 
     else:
         if function == 'update':
+            kwargs['contentTitle'] = 'Update User Group'
             grp = getGroup(uuid, includes=['includeUsers'])['group']
             form = groupForm(groupName=grp['name'],
                              groupDesc=grp['desc'],
@@ -212,6 +214,7 @@ def groupView(function=None, uuid=None):
                     return redirect(url_for('userBP.groupView'))
 
         elif function == 'new':
+            kwargs['contentTitle'] = 'New User Group'
             form = groupForm()
             form.groupUsers.choices = [(unicode(r['uuid']),r['email']) for r in getUsers()['users']]
             if form.validate_on_submit():

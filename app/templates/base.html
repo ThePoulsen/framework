@@ -41,7 +41,7 @@
                 <div class="right_col" role="main">
                     <div>
                         <div class="row">
-                            <div id="flashDiv">
+                            <div id="flashDiv" style="padding-left:10px;">
                                 {% with messages = get_flashed_messages(with_categories=true) %}
                                 {% if messages %}
 
@@ -49,7 +49,7 @@
                                     <div class="title_left">
                                         <ul class=flashes>
                                             {% for category, message in messages %}
-                                            <div id="w1" class="alert alert-{{ category[0] }} fade in">
+                                            <div id="w1" class="alert alert-{{ category[0] }} fade in" style="margin-bottom:0px;">
                                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                                 <h4><i class="fa fa-asterisk"></i>&nbsp;{{ category[1] }}!</h4>{{ message }}
                                             </div>

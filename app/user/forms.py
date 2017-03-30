@@ -14,10 +14,8 @@ class userForm(FlaskForm):
     userPhone = StringField('Phone number')
     userRole = RadioField('User role', choices=[('Administrator','Administrator'),('Superuser','Superuser'),('User','User')])
     userGroups = SelectMultipleField('Group memberships', choices=[], widget=select2MultipleWidget())
-    userSubmit = SubmitField('OK')
 
 class groupForm(FlaskForm):
     groupName = StringField('Name', validators=[InputRequired('Please enter a group name')])
     groupDesc = TextAreaField('Description')
     groupUsers = SelectMultipleField('Users', validators=[], choices=[], widget=select2MultipleWidget(), _name='test')
-    groupSubmit = SubmitField('OK')

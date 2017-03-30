@@ -51,8 +51,8 @@
     <br><br>
     <div class="input-group" style="float:right;">
         {{ usrForm.csrf_token }}
-        <a href="#" onclick="window.history.back();">Cancel</a> &nbsp
-        {{usrForm.userSubmit()}}
+        <a href="{{url_for('userBP.userView')}}">Cancel</a> &nbsp
+        <input type="submit" class="btn btn-primary" value="OK">
     </div>
 </form>
 
@@ -84,8 +84,7 @@
                 <br><br>
                 <div class="input-group" style="float:right;">
                     {{ grpForm.csrf_token }}
-                    <a href="#" onclick="window.history.back();">Cancel</a> &nbsp
-                    {{ grpForm.groupSubmit() }}
+                    <input type="submit" class="btn btn-primary" value="OK">
                 </div>
                     <br><br>
                 </form>

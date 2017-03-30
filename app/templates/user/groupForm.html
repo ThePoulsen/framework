@@ -20,11 +20,13 @@
     {% for error in form.groupName.errors %}
         <p>{{error}}</p>
     {% endfor %}
+    <br>
     {{ form.groupDesc.label }}
     {{ form.groupDesc(class_='form-control ')}}
     {% for error in form.groupDesc.errors %}
         <p>{{error}}</p>
     {% endfor %}
+    <br>
     {{ form.groupUsers.label }}
     {{ form.groupUsers(class_='form-control')}}
     {% for error in form.groupUsers.errors %}
@@ -33,7 +35,7 @@
     <br><br>
     <div class="input-group" style="float:right;">
         {{ form.csrf_token }}
-        <a href="#" onclick="window.history.back();">Cancel</a> &nbsp
+        <a href="{{url_for('userBP.groupView')}}">Cancel</a> &nbsp
         <input type="submit" class="btn btn-primary" value="OK">
     </div>
 </form>
